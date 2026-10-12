@@ -11,9 +11,11 @@ import {
   Sparkles,
   Upload,
 } from "lucide-react";
+import ProjectInfo from "./ProjectInfo";
+import DiseaseGuidance from "./DiseaseGuidance";
 
-// Use the deployed API URL in production and localhost during development.
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 const ALLOWED_TYPES = [
   "image/jpeg",
@@ -22,17 +24,17 @@ const ALLOWED_TYPES = [
   "image/jpg",
 ];
 
-// These are the plant-condition labels covered by the model's dataset.
-// This list is only for displaying supported classes on the website.
 const SUPPORTED_PLANTS = [
   {
     name: "Apple",
-    conditions: ["Apple scab", "Black rot", "Cedar apple rust", "Healthy"],
+    conditions: [
+      "Apple scab",
+      "Black rot",
+      "Cedar apple rust",
+      "Healthy",
+    ],
   },
-  {
-    name: "Blueberry",
-    conditions: ["Healthy"],
-  },
+  { name: "Blueberry", conditions: ["Healthy"] },
   {
     name: "Cherry",
     conditions: ["Powdery mildew", "Healthy"],
@@ -71,18 +73,9 @@ const SUPPORTED_PLANTS = [
     name: "Potato",
     conditions: ["Early blight", "Late blight", "Healthy"],
   },
-  {
-    name: "Raspberry",
-    conditions: ["Healthy"],
-  },
-  {
-    name: "Soybean",
-    conditions: ["Healthy"],
-  },
-  {
-    name: "Squash",
-    conditions: ["Powdery mildew"],
-  },
+  { name: "Raspberry", conditions: ["Healthy"] },
+  { name: "Soybean", conditions: ["Healthy"] },
+  { name: "Squash", conditions: ["Powdery mildew"] },
   {
     name: "Strawberry",
     conditions: ["Leaf scorch", "Healthy"],
@@ -118,8 +111,6 @@ function App() {
 
   const fileInputRef = useRef(null);
 
-  // Clean up temporary image URLs when the selected image changes
-  // or when the component is removed from the page.
   useEffect(() => {
     return () => {
       if (previewUrl) {
@@ -128,7 +119,6 @@ function App() {
     };
   }, [previewUrl]);
 
-  // Validate the selected file before showing its preview.
   const handleFile = (file) => {
     if (!file) return;
 
@@ -147,14 +137,12 @@ function App() {
     handleFile(event.target.files?.[0]);
   };
 
-  // Handle files dragged onto the upload area.
   const handleDrop = (event) => {
     event.preventDefault();
     setDragging(false);
     handleFile(event.dataTransfer.files?.[0]);
   };
 
-  // Send the selected image to the FastAPI backend for prediction.
   const handlePredict = async () => {
     if (!selectedFile) {
       setError("Please select a plant image first.");
@@ -177,7 +165,9 @@ function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || "Unable to analyze the image.");
+        throw new Error(
+          data.detail || "Unable to analyze the image."
+        );
       }
 
       setResult(data);
@@ -192,7 +182,6 @@ function App() {
     }
   };
 
-  // Clear the current image and prediction so another image can be tested.
   const handleReset = () => {
     setSelectedFile(null);
     setPreviewUrl("");
@@ -207,7 +196,6 @@ function App() {
 
   return (
     <div className="app-shell">
-      {/* Header and application branding */}
       <header className="topbar">
         <div className="brand">
           <img
@@ -229,7 +217,6 @@ function App() {
       </header>
 
       <main className="page-content">
-        {/* Introductory section */}
         <section className="hero">
           <div className="hero-kicker">
             <Leaf size={15} />
@@ -243,9 +230,10 @@ function App() {
           </h2>
 
           <p>
-            Upload a clear image of a plant leaf and let our deep learning
-            model analyze its visual features, identify the predicted
-            condition, and explain the prediction with Grad-CAM.
+            Upload a clear image of a plant leaf and let our deep
+            learning model analyze its visual features, identify
+            the predicted condition, and explain the prediction
+            with Grad-CAM.
           </p>
 
           <div className="hero-points">
@@ -253,12 +241,10 @@ function App() {
               <Check size={15} />
               38 plant-condition classes
             </div>
-
             <div>
               <Check size={15} />
               AI-powered analysis
             </div>
-
             <div>
               <Check size={15} />
               Visual explanation
@@ -266,11 +252,12 @@ function App() {
           </div>
         </section>
 
-        {/* Image upload and analysis area */}
         <section className="main-card">
           {!selectedFile && (
             <div
-              className={`upload-zone ${dragging ? "dragging" : ""}`}
+              className={`upload-zone ${
+                dragging ? "dragging" : ""
+              }`}
               role="button"
               tabIndex={0}
               aria-label="Choose a plant leaf image to upload"
@@ -282,7 +269,10 @@ function App() {
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
               onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
+                if (
+                  event.key === "Enter" ||
+                  event.key === " "
+                ) {
                   event.preventDefault();
                   fileInputRef.current?.click();
                 }
@@ -304,7 +294,8 @@ function App() {
               <h3>Upload a leaf image</h3>
 
               <p>
-                Drag and drop your image here, or <span>browse files</span>
+                Drag and drop your image here, or{" "}
+                <span>browse files</span>
               </p>
 
               <div className="upload-meta">
@@ -312,7 +303,6 @@ function App() {
                   <FileImage size={14} />
                   JPEG / PNG / WebP
                 </div>
-
                 <div>
                   <ShieldCheck size={14} />
                   Secure processing
@@ -321,7 +311,6 @@ function App() {
             </div>
           )}
 
-          {/* Show the selected image before starting the prediction */}
           {selectedFile && (
             <div className="analysis-area">
               <div className="image-panel">
@@ -343,16 +332,17 @@ function App() {
                 </div>
 
                 <div className="preview-card">
-                  <img src={previewUrl} alt="Selected plant leaf" />
+                  <img
+                    src={previewUrl}
+                    alt="Selected plant leaf"
+                  />
                 </div>
 
                 <div className="file-row">
                   <FileImage size={15} />
-
                   <span title={selectedFile.name}>
                     {selectedFile.name}
                   </span>
-
                   <Check size={15} />
                 </div>
               </div>
@@ -365,14 +355,17 @@ function App() {
                     </div>
 
                     <div>
-                      <span className="eyebrow">READY TO ANALYZE</span>
+                      <span className="eyebrow">
+                        READY TO ANALYZE
+                      </span>
                       <h3>Analyze your leaf</h3>
                     </div>
                   </div>
 
                   <p>
-                    The trained EfficientNet model will analyze the uploaded
-                    leaf image and return the predicted plant condition.
+                    The trained EfficientNet model will analyze
+                    the uploaded leaf image and return the
+                    predicted plant condition.
                   </p>
 
                   <div className="feature-list">
@@ -380,12 +373,10 @@ function App() {
                       <Check size={16} />
                       Disease classification
                     </div>
-
                     <div>
                       <Check size={16} />
                       Confidence score
                     </div>
-
                     <div>
                       <Check size={16} />
                       Grad-CAM explanation
@@ -400,7 +391,10 @@ function App() {
                   >
                     {loading ? (
                       <>
-                        <LoaderCircle size={19} className="spin" />
+                        <LoaderCircle
+                          size={19}
+                          className="spin"
+                        />
                         Analyzing leaf...
                       </>
                     ) : (
@@ -413,8 +407,12 @@ function App() {
 
                   {loading && (
                     <div className="loading-note">
-                      <LoaderCircle size={14} className="spin" />
-                      Running AI inference. This may take a few moments.
+                      <LoaderCircle
+                        size={14}
+                        className="spin"
+                      />
+                      Running AI inference. This may take a few
+                      moments.
                     </div>
                   )}
                 </div>
@@ -422,11 +420,9 @@ function App() {
             </div>
           )}
 
-          {/* Display upload and prediction errors in one place */}
           {error && (
             <div className="error-box" role="alert">
               <AlertCircle size={18} />
-
               <div>
                 <strong>Unable to analyze image</strong>
                 <p>{error}</p>
@@ -435,7 +431,6 @@ function App() {
           )}
         </section>
 
-        {/* Prediction results and Grad-CAM explanation */}
         {result && (
           <section className="result-card">
             {result.status === "uncertain" ? (
@@ -444,16 +439,23 @@ function App() {
                   <AlertCircle size={26} />
                 </div>
 
-                <span className="eyebrow">ANALYSIS INCONCLUSIVE</span>
+                <span className="eyebrow">
+                  ANALYSIS INCONCLUSIVE
+                </span>
 
-                <h3>Unable to confidently identify this image</h3>
+                <h3>
+                  Unable to confidently identify this image
+                </h3>
 
                 <p>
                   The model's confidence was{" "}
-                  <strong>{formatConfidence(result.confidence)}</strong>.
-                  Please upload a clear image of a plant leaf for a more
-                  reliable prediction. This check does not guarantee that
-                  every unsupported image will be detected.
+                  <strong>
+                    {formatConfidence(result.confidence)}
+                  </strong>
+                  . Please upload a clear image of a plant leaf
+                  for a more reliable prediction. This check does
+                  not guarantee that every unsupported image
+                  will be detected.
                 </p>
 
                 <button
@@ -469,13 +471,16 @@ function App() {
               <>
                 <div className="result-top">
                   <div>
-                    <span className="eyebrow">ANALYSIS COMPLETE</span>
+                    <span className="eyebrow">
+                      ANALYSIS COMPLETE
+                    </span>
                     <h3>Plant health prediction</h3>
                   </div>
 
                   <div className="confidence-badge">
                     <Check size={15} />
-                    {formatConfidence(result.confidence)} confidence
+                    {formatConfidence(result.confidence)}{" "}
+                    confidence
                   </div>
                 </div>
 
@@ -498,13 +503,18 @@ function App() {
                     </div>
 
                     <div className="result-image-card">
-                      <img src={previewUrl} alt="Uploaded plant leaf" />
+                      <img
+                        src={previewUrl}
+                        alt="Uploaded plant leaf"
+                      />
                     </div>
                   </div>
 
                   <div className="result-image-panel">
                     <div className="result-label">
-                      <span className="eyebrow">MODEL EXPLANATION</span>
+                      <span className="eyebrow">
+                        MODEL EXPLANATION
+                      </span>
                       <strong>Grad-CAM visualization</strong>
                     </div>
 
@@ -519,14 +529,20 @@ function App() {
 
                 <div className="explanation-box">
                   <Sparkles size={18} />
-
                   <p>
-                    The highlighted regions represent areas that contributed
-                    most strongly to the model's selected prediction. Grad-CAM
-                    provides a visual explanation of the model's decision; it
-                    is not a ground-truth disease segmentation mask.
+                    The highlighted regions represent areas that
+                    contributed most strongly to the model's
+                    selected prediction. Grad-CAM provides a
+                    visual explanation of the model's decision;
+                    it is not a ground-truth disease segmentation
+                    mask.
                   </p>
                 </div>
+
+                {/* Recommendations selected by predicted class */}
+                <DiseaseGuidance
+                  displayName={result.display_name}
+                />
 
                 <button
                   type="button"
@@ -541,7 +557,6 @@ function App() {
           </section>
         )}
 
-        {/* List the plant types and conditions covered by the model */}
         <section
           className="supported-section"
           aria-labelledby="supported-title"
@@ -549,30 +564,43 @@ function App() {
           <div className="supported-section-header">
             <span className="eyebrow">MODEL COVERAGE</span>
 
-            <h3 id="supported-title">Supported Plants &amp; Conditions</h3>
+            <h3 id="supported-title">
+              Supported Plants &amp; Conditions
+            </h3>
 
             <p className="supported-description">
-              LeafLens AI is trained to recognize the plant-condition classes
-              listed below. Choose a clear leaf image from one of these plant
-              types for the most relevant result.
+              LeafLens AI is trained to recognize the
+              plant-condition classes listed below. Choose a
+              clear leaf image from one of these plant types for
+              the most relevant result.
             </p>
           </div>
 
           <div className="supported-grid">
             {SUPPORTED_PLANTS.map((plant) => (
-              <article className="supported-plant-card" key={plant.name}>
+              <article
+                className="supported-plant-card"
+                key={plant.name}
+              >
                 <div className="supported-plant-heading">
-                  <h4 className="supported-plant-name">{plant.name}</h4>
+                  <h4 className="supported-plant-name">
+                    {plant.name}
+                  </h4>
 
                   <span className="supported-plant-count">
                     {plant.conditions.length}{" "}
-                    {plant.conditions.length === 1 ? "class" : "classes"}
+                    {plant.conditions.length === 1
+                      ? "class"
+                      : "classes"}
                   </span>
                 </div>
 
                 <div className="supported-condition-list">
                   {plant.conditions.map((condition) => (
-                    <span className="supported-condition" key={condition}>
+                    <span
+                      className="supported-condition"
+                      key={condition}
+                    >
                       {condition}
                     </span>
                   ))}
@@ -583,18 +611,17 @@ function App() {
 
           <div className="supported-note">
             <AlertCircle size={17} />
-
             <span>
-              The model can predict only the conditions listed here. Raspberry
-              and Soybean have healthy-leaf examples only in this dataset.
-              Images of other plants or conditions may be misclassified, so
-              treat the result as a model prediction rather than a confirmed
-              diagnosis.
+              The model can predict only the conditions listed
+              here. Raspberry and Soybean have healthy-leaf
+              examples only in this dataset. Images of other
+              plants or conditions may be misclassified, so
+              treat the result as a model prediction rather
+              than a confirmed diagnosis.
             </span>
           </div>
         </section>
 
-        {/* Explain the three main steps when no prediction is being shown */}
         {!result && (
           <section className="workflow-section">
             <div className="workflow-heading">
@@ -605,11 +632,9 @@ function App() {
             <div className="workflow-grid">
               <div className="workflow-card">
                 <div className="workflow-number">01</div>
-
                 <div className="workflow-icon">
                   <Upload size={19} />
                 </div>
-
                 <h4>Upload</h4>
                 <p>Choose a clear image of a plant leaf.</p>
               </div>
@@ -618,42 +643,45 @@ function App() {
 
               <div className="workflow-card">
                 <div className="workflow-number">02</div>
-
                 <div className="workflow-icon">
                   <Sparkles size={19} />
                 </div>
-
                 <h4>Analyze</h4>
-                <p>EfficientNet-B0 analyzes the leaf's visual features.</p>
+                <p>
+                  EfficientNet-B0 analyzes the leaf's visual
+                  features.
+                </p>
               </div>
 
               <div className="workflow-line" />
 
               <div className="workflow-card">
                 <div className="workflow-number">03</div>
-
                 <div className="workflow-icon">
                   <ShieldCheck size={19} />
                 </div>
-
                 <h4>Understand</h4>
                 <p>
-                  View the prediction, confidence, and Grad-CAM explanation.
+                  View the prediction, confidence, and Grad-CAM
+                  explanation.
                 </p>
               </div>
             </div>
           </section>
         )}
+
+        <ProjectInfo />
       </main>
 
-      {/* Footer branding */}
       <footer className="footer">
         <div className="footer-brand">
           <img src="/leaflens-logo.svg" alt="" />
           <span>LeafLens AI</span>
         </div>
 
-        <span>Deep Learning • EfficientNet-B0 • Grad-CAM</span>
+        <span>
+          Deep Learning • EfficientNet-B0 • Grad-CAM
+        </span>
       </footer>
     </div>
   );
