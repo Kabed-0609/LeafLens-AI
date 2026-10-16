@@ -1130,3 +1130,40 @@ img {
     gap: 6px;
   }
 }
+
+
+.footer {
+  flex-wrap: wrap;
+}
+
+.footer-project-credit {
+  flex: 0 0 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+  color: #64748b;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.footer-project-credit strong {
+  color: #475569;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .footer-project-credit {
+    font-size: 0.72rem;
+    overflow-wrap: anywhere;
+  }
+
+  .footer-tech {
+    text-align: center;
+  }
+}

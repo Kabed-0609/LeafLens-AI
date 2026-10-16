@@ -241,10 +241,12 @@ function App() {
               <Check size={15} />
               38 plant-condition classes
             </div>
+
             <div>
               <Check size={15} />
               AI-powered analysis
             </div>
+
             <div>
               <Check size={15} />
               Visual explanation
@@ -303,6 +305,7 @@ function App() {
                   <FileImage size={14} />
                   JPEG / PNG / WebP
                 </div>
+
                 <div>
                   <ShieldCheck size={14} />
                   Secure processing
@@ -340,9 +343,11 @@ function App() {
 
                 <div className="file-row">
                   <FileImage size={15} />
+
                   <span title={selectedFile.name}>
                     {selectedFile.name}
                   </span>
+
                   <Check size={15} />
                 </div>
               </div>
@@ -373,10 +378,12 @@ function App() {
                       <Check size={16} />
                       Disease classification
                     </div>
+
                     <div>
                       <Check size={16} />
                       Confidence score
                     </div>
+
                     <div>
                       <Check size={16} />
                       Grad-CAM explanation
@@ -423,6 +430,7 @@ function App() {
           {error && (
             <div className="error-box" role="alert">
               <AlertCircle size={18} />
+
               <div>
                 <strong>Unable to analyze image</strong>
                 <p>{error}</p>
@@ -529,6 +537,7 @@ function App() {
 
                 <div className="explanation-box">
                   <Sparkles size={18} />
+
                   <p>
                     The highlighted regions represent areas that
                     contributed most strongly to the model's
@@ -611,6 +620,7 @@ function App() {
 
           <div className="supported-note">
             <AlertCircle size={17} />
+
             <span>
               The model can predict only the conditions listed
               here. Raspberry and Soybean have healthy-leaf
@@ -632,9 +642,11 @@ function App() {
             <div className="workflow-grid">
               <div className="workflow-card">
                 <div className="workflow-number">01</div>
+
                 <div className="workflow-icon">
                   <Upload size={19} />
                 </div>
+
                 <h4>Upload</h4>
                 <p>Choose a clear image of a plant leaf.</p>
               </div>
@@ -643,10 +655,13 @@ function App() {
 
               <div className="workflow-card">
                 <div className="workflow-number">02</div>
+
                 <div className="workflow-icon">
                   <Sparkles size={19} />
                 </div>
+
                 <h4>Analyze</h4>
+
                 <p>
                   EfficientNet-B0 analyzes the leaf's visual
                   features.
@@ -657,10 +672,13 @@ function App() {
 
               <div className="workflow-card">
                 <div className="workflow-number">03</div>
+
                 <div className="workflow-icon">
                   <ShieldCheck size={19} />
                 </div>
+
                 <h4>Understand</h4>
+
                 <p>
                   View the prediction, confidence, and Grad-CAM
                   explanation.
@@ -679,9 +697,28 @@ function App() {
           <span>LeafLens AI</span>
         </div>
 
-        <span>
+        <span className="footer-tech">
           Deep Learning • EfficientNet-B0 • Grad-CAM
         </span>
+
+        {/* Academic project credit added below the existing footer */}
+        <div className="footer-project-credit">
+          <span>
+            M.Tech. Major Project by{" "}
+            <strong>SK Kabed Ul Namizuddin</strong>
+          </span>
+
+          <span>
+            Computer Science and Engineering · Budge Budge Institute of
+            Technology
+          </span>
+
+          <span>
+            Maulana Abul Kalam Azad University of Technology
+          </span>
+
+          <span>Mentor: Dr. Munshi Yusuf Alam</span>
+        </div>
       </footer>
     </div>
   );
